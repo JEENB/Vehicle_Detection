@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from random import randint
+import cv2
 
 def get_img_size(dir):
 	'''returns the dimensions of images'''
@@ -31,3 +32,29 @@ def show_random_images(image_dir,rows=2, cols=10, num=20, title = ""):
 		plt.suptitle(title, size = 15)
 		plt.subplots_adjust(top=1.3)
 	plt.show()
+
+
+def resize_image(image, size= (32,32)):
+
+	'''
+	resizes the image to a new size and retures a 1D matrix
+	size = tuple() = (32,32) default
+	'''
+	new_image = cv2.resize(image, size).ravel()
+	return new_image
+
+
+def change_color_space(image, cspace):
+	if cspace == "YUV":
+		return cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
+	elif cspace == "HLS":
+		return cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+	elif cspace == "HSV":
+		return cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+	elif cspace == "LUV":
+		return cv2.cvtColor(image, cv2.COLOR_RGB2LUV)
+	elif cspace == "YCrCb":
+		return cv2.cvtColor(image, cv2.COLOR_RGB2YCrCb)	
+	else:
+		return np.copy(image)
+	
