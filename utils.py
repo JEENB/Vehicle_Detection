@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from random import randint
 import cv2
+import pickle
 
 def get_img_size(dir):
 	'''returns the dimensions of images'''
@@ -58,3 +59,27 @@ def change_color_space(image, cspace):
 	else:
 		return np.copy(image)
 	
+
+def feature_set_viz(feature_set,title, columns = 4, rows = 10, figsize = (15,15)):
+	fig, ax_array = plt.subplots(nrows= rows, ncols= columns, figsize=figsize)
+	fig.suptitle(title)
+	plt.tight_layout()
+
+	plt.subplots_adjust(top=0.9)
+	for i,ax_row in enumerate(ax_array):
+		for j,axes in enumerate(ax_row):
+			axes.set_yticklabels([])
+			axes.set_xticklabels([])
+			try:
+				axes.set_title(f"channel:[{j-1}]\n{feature_set[i][4]}")
+				img = feature_set[i][j]
+				img = np.reshape(img, (64,64))
+				axes.imshow(img, cmap='gray')
+			except:
+				axes.set_title('')
+				axes.imshow(feature_set[i][j])
+	plt.show()
+
+
+def save_as_pickle(dic, file_path):
+	pickle.dump(dic, open(file_path, 'wb') )
